@@ -58,7 +58,7 @@
             --color_enter: #e538e2;
             --color_enter_rgb: 229, 56, 226;
         }  
-        *{
+        * {
             box-sizing: border-box;
         }      
         html, body, form {
@@ -72,6 +72,7 @@
         #wrap-center {
             width: 1280px;
             display: inline-block;
+            background-color: white;
         }
         #header {
             text-align: left;
@@ -101,6 +102,8 @@
         #header-hamburger > div, #header-naverpay > div, #header-notice > div {
             background-image: url(./sp_main.png);
             position: relative;
+            width: 32px;
+            height: 32px;
             z-index: 1; /* z-index는 형제끼리만 적용되고 스태틱이면 안됨*/
             background-repeat: no-repeat;
             background-size: 420px 405px;
@@ -110,7 +113,7 @@
         }
         #header-hamburger > div{
             width: 26px;
-            height: 26px;
+            height: 26px;            
             background-position: -282px -155px;
         }    
         #header-naverpay {
@@ -184,7 +187,10 @@
                     padding: 17px 0;
                     border: none;
                     outline: none;
-                }                
+                }  
+                #search > form:hover {
+                    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12);
+                }              
                 #search-svg {
                     display: inline-block;
                     width: 68px;
@@ -205,7 +211,13 @@
                     font-weight: bold;
                     border: none;
                     outline: none;
-                }                
+                }
+                #search-input::placeholder {
+                    color: white;
+                }         
+                search-input:focus::placeholder {
+                    color: rgb(230, 230, 230);
+                }       
                 #search-right {
                     flex: 1;
                     display: flex;
@@ -237,6 +249,9 @@
                     width: 24px;
                     height: 14px;
                 }
+                #serach-keyboard:hover::before {
+                    filter: brightness(0.7);
+                }
                 #search-recent::before {
                     content: "";
                     display: block;
@@ -247,7 +262,15 @@
                     width: 10px;
                     height: 6px;
                 }
-                #search-button::before {
+                search-button {
+                    padding: 17px 27px 16px 10px;
+                }
+                #search-button > div {
+                    background: #03c75a;
+                    width: 25px;
+                    height: 25px;                   
+                }
+                #search-button > div::before {
                     content: '';
                     display: inline-block;
                     background-image: url(https://pm.pstatic.net/resources/asset/sp_main.b27083b1.png);
