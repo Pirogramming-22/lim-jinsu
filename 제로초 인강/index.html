@@ -171,7 +171,7 @@
             </div>
             <style>
                 #search > form {
-                    display: inline-block;
+                    display: inline-flex;
                     width: 708px;
                     height: 60px;
                     border: 1px solid #03c75a;
@@ -207,7 +207,10 @@
                     outline: none;
                 }                
                 #search-right {
-                    display: inline-block;
+                    flex: 1;
+                    display: flex;
+                    align-items: stretch;
+                    justify-content: flex-end;
                 }
                 #search > form a {
                     width: 68px;
@@ -218,6 +221,11 @@
                 #search > form svg {
                     width: 24px;
                     height: 24px;
+                }
+                #search-keyboard, #search-recent, #search-button {
+                    background: transparent; /*투명해짐*/
+                    border: none;
+                    cursor: pointer;
                 }
                 #search-keyboard::before {
                     content: "";
