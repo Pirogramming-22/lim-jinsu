@@ -1,6 +1,6 @@
 num = 0
 end = False
- 
+
 while not end:
     while True:
         user_input = input("부를 숫자의 개수를 입력하세요(1, 2, 3만 입력 가능) : ")
@@ -25,12 +25,13 @@ while not end:
         num += 1
         print(f"playerA : {num}")
         if num == 31:
+            print("playerB win!")
             end = True
             break
 
     if end == True:
         break
- 
+
     while True:
         user_input = input("부를 숫자의 개수를 입력하세요(1, 2, 3만 입력 가능) : ")
 
@@ -55,5 +56,6 @@ while not end:
         num += 1
         print(f"playerB : {num}")
         if num == 31:
+            print("playerA win!")
             end = True
             break
