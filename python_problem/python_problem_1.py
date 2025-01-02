@@ -20,3 +20,8 @@ while True:
 
     # 검사를 통과하면 루프 종료
     break
+
+# 4단계
+for i in range(cnt):
+    num += 1
+    print(f"playerA : {num}")
