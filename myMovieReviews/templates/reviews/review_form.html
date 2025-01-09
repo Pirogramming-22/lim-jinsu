@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{% if review %}Edit Review{% else %}Add a New Review{% endif %}</h2> <!-- 제목 변경: 작성/수정 구분 -->
+
+<form method="POST">
+    {% csrf_token %}
+
+    <!-- 영화 제목 -->
+    <label for="title">Movie Title:</label>
+    <input type="text" id="title" name="title" value="{{ review.title|default_if_none:'' }}" required><br>
+
+    <!-- 개봉 연도 -->
+    <label for="year">Release Year:</label>
+    <input type="number" id="year" name="year" value="{{ review.year|default_if_none:'' }}" required><br>
+
+    <!-- 장르 -->
+    <label for="genre">Genre:</label>
+    <input type="text" id="genre" name="genre" value="{{ review.genre|default_if_none:'' }}" required><br>
+
+    <!-- 감독 -->
+    <label for="director">Director:</label>
+    <input type="text" id="director" name="director" value="{{ review.director|default_if_none:'' }}" required><br>
+
+    <!-- 배우 -->
+    <label for="cast">Cast:</label>
+    <textarea id="cast" name="cast" required>{{ review.cast|default_if_none:'' }}</textarea><br>
+
+    <!-- 별점 -->
+    <label for="rating">Rating:</label>
+    <input type="number" step="0.1" id="rating" name="rating" value="{{ review.rating|default_if_none:'' }}" required><br>
+
+    <!-- 러닝타임 -->
+    <label for="runtime">Runtime (minutes):</label>
+    <input type="number" id="runtime" name="runtime" value="{{ review.runtime|default_if_none:'' }}" required><br>
+
+    <!-- 리뷰 내용 -->
+    <label for="review">Review:</label>
+    <textarea id="review" name="review" required>{{ review.review|default_if_none:'' }}</textarea><br>
+
+    <!-- 제출 버튼 -->
+    <button type="submit">{% if review %}Save Changes{% else %}Submit{% endif %}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ review.title }}</h2>
+<p><strong>Year:</strong> {{ review.year }}</p>
+<p><strong>Genre:</strong> {{ review.genre }}</p>
+<p><strong>Director:</strong> {{ review.director }}</p>
+<p><strong>Cast:</strong> {{ review.cast }}</p>
+<p><strong>Rating:</strong> {{ review.rating }}</p>
+<p><strong>Runtime:</strong> {{ review.runtime }} minutes</p>
+<hr>
+<p>{{ review.review }}</p>
+
+<!-- 수정 버튼 -->
+<a href="{% url 'update' review_id=review.id %}">Edit</a>
+<a href="{% url 'delete' review_id=review.id %}" onclick="return confirm('진짜 지울거야??...');">Delete</a>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>All Movie Reviews</h2>
+<div class="reviews">
+    {% for review in reviews %}
+    <div class="review">
+        <h3><a href="{% url 'detail' review_id=review.id %}">{{ review.title }}</a></h3>
+        <p>Release Year: {{ review.year }}</p>
+        <p>Genre: {{ review.genre }}</p>
+        <p>Rating: {{ review.rating }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
