@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="tool-detail">
+    <h1>{{ tool.name }}</h1>
+    <p>{{ tool.description }}</p>
+    <p><strong>카테고리:</strong> {{ tool.category }}</p>
+    <hr>
+    <div class="detail-buttons">
+        <a href="{% url 'tools_edit' tool.id %}" class="btn btn-primary">수정</a>
+        <a href="#" class="btn btn-danger" onclick="if(confirm('정말 삭제하시겠습니까?')) { document.getElementById('delete-form').submit(); }">삭제</a>
+        <a href="{% url 'tools_list' %}" class="btn btn-secondary">목록</a>
+    </div>
+
+    <form id="delete-form" method="post" action="{% url 'tools_delete' tool.id %}" style="display: none;">
+        {% csrf_token %}
+    </form>
+</div>
+{% endblock %}

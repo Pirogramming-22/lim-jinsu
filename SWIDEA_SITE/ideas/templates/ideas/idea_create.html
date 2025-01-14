@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+아이디어 등록
+{% endblock %}
+
+{% block content %}
+<h1>아이디어 등록</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_title">아이디어 제목</label>
+        {{ form.title }}
+    </div>
+    <div class="form-group">
+        <label for="id_content">아이디어 설명</label>
+        {{ form.content }}
+    </div>
+    <div class="form-group">
+        <label for="id_interest">아이디어 관심도</label>
+        {{ form.interest }}
+    </div>
+    <div class="form-group">
+        <label for="id_tool">예상 개발 도구</label>
+        {{ form.tool }}
+    </div>
+    <div class="form-group">
+        <label for="id_image">이미지</label>
+        {{ form.image }} 
+    </div>
+    <button type="submit" class="btn btn-primary">등록</button>
+</form>
+{% endblock %}

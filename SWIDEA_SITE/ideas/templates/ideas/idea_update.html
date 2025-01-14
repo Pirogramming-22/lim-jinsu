@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}
+아이디어 수정
+{% endblock %}
+
+{% block content %}
+<div class="update-container">
+    <h1>아이디어 수정</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="title">Title:</label>
+            {{ form.title }}
+        </div>
+        <div>
+            <label for="content">Content:</label>
+            {{ form.content }}
+        </div>
+        <div>
+            <label for="interest">Interest:</label>
+            {{ form.interest }}
+        </div>
+        <div>
+            <label for="image">Current Image:</label>
+            {% if idea.image %}
+            <img src="{{ idea.image.url }}" alt="{{ idea.title }}">
+            {% endif %}
+            {{ form.image }}
+        </div>
+        <button type="submit">저장</button>
+    </form>
+</div>
+{% endblock %}
