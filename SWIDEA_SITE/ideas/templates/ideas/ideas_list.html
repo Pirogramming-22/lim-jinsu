@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+아이디어 목록
+{% endblock %}
+
+{% block content %}
+<h1>아이디어 관리 페이지</h1>
+
+<!-- 정렬 드롭다운 -->
+<form method="get" style="margin-bottom: 20px;">
+    <label for="sort">정렬 기준:</label>
+    <select name="sort" id="sort" onchange="this.form.submit()">
+        <option value="title" {% if sort_option == 'title' %}selected{% endif %}>제목 (기본값)</option>
+        <option value="-interest" {% if sort_option == '-interest' %}selected{% endif %}>관심도 높은 순</option>
+        <option value="-created_at" {% if sort_option == '-created_at' %}selected{% endif %}>최신 업로드 순</option>
+    </select>
+</form>
+
+<!-- 아이디어 목록 -->
+<ul>
+    {% for idea in ideas %}
+    <div class="card">
+        <h2><a href="{% url 'idea_detail' idea.pk %}">{{ idea.title }}</a></h2>
+        <p>{{ idea.content }}</p>
+        <p><strong>관심도:</strong> {{ idea.interest }}</p>
+        <p>예상 개발 도구: {{ idea.tool.name }}</p>
+        <p><strong>업로드 시간:</strong> {{ idea.created_at|date:"Y-m-d H:i" }}</p>
+        {% if idea.image %}
+        <img src="{{ idea.image.url }}" alt="{{ idea.title }}" style="width: 100px; height: auto;">
+        {% endif %}
+    </div>
+    {% endfor %}
+</ul>
+{% endblock %}

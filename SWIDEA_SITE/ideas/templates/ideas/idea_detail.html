@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+아이디어 상세 정보
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>{{ idea.title }}</h1>
+    <p>{{ idea.content }}</p>
+    <p><strong>관심도:</strong> {{ idea.interest }}</p>
+    <p>예상 개발 도구: {{ idea.tool.name }}</p>
+    <p><strong>업로드 시간:</strong> {{ idea.created_at|date:"Y-m-d H:i" }}</p>
+    {% if idea.image %}
+    <img src="{{ idea.image.url }}" alt="{{ idea.title }}" style="width: 300px; height: auto;">
+    {% endif %}
+    <div class="detail-buttons">
+        <a href="{% url 'idea_update' idea.pk %}" class="btn btn-primary">수정</a>
+        <button onclick="if(confirm('정말 삭제하시겠습니까?')) { window.location.href='{% url 'idea_delete' idea.pk %}'; }" class="btn btn-danger">삭제</button>
+        <a href="{% url 'idea_list' %}" class="btn btn-secondary">목록</a>
+    </div>
+</div>
+{% endblock %}

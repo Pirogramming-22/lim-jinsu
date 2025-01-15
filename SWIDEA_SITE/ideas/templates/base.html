@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SWIDEA Site{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Nav-bar -->
+    <header>
+        <nav class="navbar">
+            <a href="/" class="site-title">JINSU'S SWIDEA_SITE</a>
+            <ul class="nav-links">
+                <li><a href="/ideas/new/">아이디어 등록</a></li>
+                <li><a href="/ideas/">아이디어 관리</a></li>
+                <li><a href="/tools/new/">개발 도구 등록</a></li>
+                <li><a href="/tools/">개발 도구 관리</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 메인 컨텐츠 -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>개발 도구 관리 페이지</h1>
+    <ul>
+        {% for tool in tools %}
+        <div class="tool-item">
+            <h2><a href="{% url 'tools_detail' tool.id %}">{{ tool.name }}</a></h2>
+            <p>{{ tool.category }}</p>
+            <p>{{ tool.description }}</p>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
