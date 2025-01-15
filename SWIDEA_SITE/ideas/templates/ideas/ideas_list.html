@@ -13,7 +13,8 @@
     <select name="sort" id="sort" onchange="this.form.submit()">
         <option value="title" {% if sort_option == 'title' %}selected{% endif %}>제목 (기본값)</option>
         <option value="-interest" {% if sort_option == '-interest' %}selected{% endif %}>관심도 높은 순</option>
-        <option value="-created_at" {% if sort_option == '-created_at' %}selected{% endif %}>최신 업로드 순</option>
+        <option value="-created_at" {% if sort_option == '-created_at' %}selected{% endif %}>최신순</option>
+        <option value="created_at" {% if sort_option == 'created_at' %}selected{% endif %}>등록순</option>
     </select>
 </form>
 
@@ -21,15 +22,80 @@
 <ul>
     {% for idea in ideas %}
     <div class="card">
+        <div class="image-container">
+            {% if idea.image %}
+            <img src="{{ idea.image.url }}" alt="{{ idea.title }}" class="idea-image">
+            {% endif %}
+            <form method="post" action="{% url 'toggle_star' idea.id %}" class="star-form">
+                {% csrf_token %}
+                {% if idea.is_starred %}
+                <button type="submit" class="btn-star active">★</button> <!-- 찜한 상태 -->
+                {% else %}
+                <button type="submit" class="btn-star">☆</button> <!-- 찜하지 않은 상태 -->
+                {% endif %}
+            </form>
+        </div>
         <h2><a href="{% url 'idea_detail' idea.pk %}">{{ idea.title }}</a></h2>
-        <p>{{ idea.content }}</p>
-        <p><strong>관심도:</strong> {{ idea.interest }}</p>
+        <p>관심도: <span id="interest-{{ idea.id }}">{{ idea.interest }}</span></p>
+        <button class="btn-increase" data-idea-id="{{ idea.id }}">+</button>
+        <button class="btn-decrease" data-idea-id="{{ idea.id }}">-</button>
         <p>예상 개발 도구: {{ idea.tool.name }}</p>
-        <p><strong>업로드 시간:</strong> {{ idea.created_at|date:"Y-m-d H:i" }}</p>
-        {% if idea.image %}
-        <img src="{{ idea.image.url }}" alt="{{ idea.title }}" style="width: 100px; height: auto;">
-        {% endif %}
     </div>
     {% endfor %}
 </ul>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // 관심도 증가 버튼 이벤트 리스너
+    document.querySelectorAll(".btn-increase").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const ideaId = this.dataset.ideaId;
+            adjustInterest(ideaId, "increase");
+        });
+    });
+
+    // 관심도 감소 버튼 이벤트 리스너
+    document.querySelectorAll(".btn-decrease").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const ideaId = this.dataset.ideaId;
+            adjustInterest(ideaId, "decrease");
+        });
+    });
+
+    // CSRF 토큰 가져오기
+    function getCSRFToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+
+    // 관심도 조정 함수
+    function adjustInterest(ideaId, action) {
+        fetch(`/adjust-interest/${ideaId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ action: action }),
+        })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                if (data.success) {
+                    // 관심도 업데이트
+                    const interestElement = document.getElementById(`interest-${ideaId}`);
+                    interestElement.textContent = data.new_interest;
+                } else {
+                    console.error(data.error || "Failed to adjust interest.");
+                }
+            })
+            .catch(function (error) {
+                console.error("Error:", error);
+            });
+    }
+});
+</script>
 {% endblock %}

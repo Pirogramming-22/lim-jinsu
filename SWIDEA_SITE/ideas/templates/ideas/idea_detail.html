@@ -6,11 +6,19 @@
 
 {% block content %}
 <div class="form-container">
-    <h1>{{ idea.title }}</h1>
-    <p>{{ idea.content }}</p>
+    <h1>
+        {{ idea.title }}
+        {% if is_starred %}
+        <span class="star_active">★</span> 
+        {% else %}
+        <span class="star">☆</span> 
+        {% endif %}
+    </h1>
     <p><strong>관심도:</strong> {{ idea.interest }}</p>
-    <p>예상 개발 도구: {{ idea.tool.name }}</p>
-    <p><strong>업로드 시간:</strong> {{ idea.created_at|date:"Y-m-d H:i" }}</p>
+    <p>예상 개발 도구: 
+        <a href="{% url 'tools_detail' idea.tool.id %}">{{ idea.tool.name }}</a>
+    </p>
+    <p>아이디어 설명: {{ idea.content }}</p>
     {% if idea.image %}
     <img src="{{ idea.image.url }}" alt="{{ idea.title }}" style="width: 300px; height: auto;">
     {% endif %}
