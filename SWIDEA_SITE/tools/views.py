@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Tool
 from .forms import ToolForm
 from django.contrib import messages
+from ideas.models import Idea
 
 def tools_list(request):
     tools = Tool.objects.all().order_by('name') 
@@ -10,7 +11,8 @@ def tools_list(request):
 
 def tools_detail(request, tool_id):
     tool = get_object_or_404(Tool, id=tool_id)
-    return render(request, 'tools/tools_detail.html', {'tool': tool})
+    ideas = Idea.objects.filter(tool=tool)
+    return render(request, 'tools/tools_detail.html', {'tool': tool, 'ideas':ideas})
 
 def tools_create(request):
     if request.method == "POST":
