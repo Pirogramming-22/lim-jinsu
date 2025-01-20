@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>피로스타그램</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'posts/styles.css' %}">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title">Pirostagram</h1>
+    </header>
+    <div class="container">
+        <div class
+        {% for post in posts %}
+        <div class="post">
+            <h2>{{ post.title }}</h2>
+            <img src="{{ post.image.url }}" alt="이미지" class="post-image">
+            <p>{{ post.content }}</p>
+            <p>❤️ <span id="like-count-{{ post.id }}">{{ post.like_count }}</span></p>
+            <button class="like-btn" data-id="{{ post.id }}">좋아요</button>
+
+        <!-- 댓글 목록 -->
+        <div id="comments-{{ post.id }}">
+            {% for comment in post.comments.all %}
+            <p id="comment-{{ comment.id }}">
+                {{ comment.content }} - {{ comment.created_at }}
+                <button class="delete-comment-btn" data-id="{{ comment.id }}">삭제</button>
+            </p>
+            {% endfor %}
+        </div>
+
+        <!-- 댓글 입력 폼 -->
+        <form class="comment-form" data-id="{{ post.id }}">
+            {% csrf_token %}
+            <input type="text" name="content" placeholder="댓글을 입력하세요">
+            <button type="submit">댓글 추가</button>
+        </form>
+        </div>
+        {% empty %}
+        <p>게시물이 없습니다.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+<script>
+// 좋아요 버튼 AJAX
+document.querySelectorAll(".like-btn").forEach(button => {
+    button.addEventListener("click", function () {
+        const postId = this.dataset.id;  
+        const likeCountSpan = document.getElementById(`like-count-${postId}`); 
+
+        fetch(`/like/${postId}/`, {
+            method: "POST", 
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",  // CSRF 토큰 추가
+            },
+        })
+        .then(response => response.json())  // JSON 응답 처리
+        .then(data => {
+            if (data.like_count !== undefined) {  // 좋아요 수가 반환되었는지 확인
+                likeCountSpan.textContent = data.like_count;  // 좋아요 수 업데이트
+            }
+        })
+        .catch(error => console.error("Error:", error));  // 오류 처리
+    });
+});
+
+// 댓글 추가 AJAX
+document.querySelectorAll(".comment-form").forEach(form => {
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();  // 기본 폼 제출 동작 방지
+        const postId = this.dataset.id;  // 폼의 data-id에서 post_id 가져오기
+        const contentInput = this.querySelector("input[name='content']");  // 입력 필드
+        const content = contentInput.value;  // 댓글 내용 가져오기
+
+        fetch(`/comment/add/${postId}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: `content=${encodeURIComponent(content)}`,  // 요청 본문
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.content) {
+                // 새 댓글을 댓글 목록에 추가
+                const commentsDiv = document.getElementById(`comments-${postId}`);
+                const newComment = document.createElement("p");
+                newComment.id = `comment-${data.id}`;
+                newComment.innerHTML = `
+                    ${data.content} - ${data.created_at}
+                    <button class="delete-comment-btn" data-id="${data.id}">삭제</button>
+                `;
+                commentsDiv.appendChild(newComment);
+
+                // 새 댓글의 삭제 버튼에 동적으로 이벤트 추가
+                const deleteButton = newComment.querySelector(".delete-comment-btn");
+                attachDeleteEvent(deleteButton);
+
+                // 입력 필드 초기화
+                contentInput.value = "";
+            } else {
+                alert(data.error || "댓글을 추가할 수 없습니다.");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+
+// 댓글 삭제 이벤트 연결 함수
+function attachDeleteEvent(button) {
+    button.addEventListener("click", function () {
+        const commentId = this.dataset.id;  // 댓글 ID 가져오기
+
+        fetch(`/comment/delete/${commentId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",  // CSRF 토큰 추가
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                // 댓글 삭제 성공 시 화면에서 제거
+                const commentElement = document.getElementById(`comment-${commentId}`);
+                commentElement.remove();
+            } else {
+                alert(data.error || "댓글을 삭제할 수 없습니다.");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+}
+
+// 페이지 로드 시 기존 댓글 삭제 버튼에 이벤트 연결
+document.querySelectorAll(".delete-comment-btn").forEach(button => {
+    attachDeleteEvent(button);
+});
+</script>

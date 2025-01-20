@@ -1,0 +1,120 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    width: 600px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* 각 게시물 스타일 */
+.post {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+
+
+.post-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.post-image {
+    width: 100%;
+    height: 300px; 
+    object-fit: cover; 
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.post-content {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* 좋아요 버튼 스타일 */
+.like-btn {
+    background: #ff5757;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.like-btn:hover {
+    background: #ff3333;
+}
+
+/* 댓글 스타일 */
+.comments {
+    margin-top: 15px;
+}
+
+.comment {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* 댓글 입력 폼 스타일 */
+.comment-form {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.comment-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.comment-submit {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.comment-submit:hover {
+    background: #0056b3;
+}
+
+.header {
+    width: 100%; 
+    background-color: #ff5757; 
+    color: white;
+    padding: 10px 0; 
+    text-align: center;
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: bold; 
+    margin: 0; 
+}
